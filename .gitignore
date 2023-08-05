@@ -1,0 +1,90 @@
+# 请将 cursor 放在“#outline: ./Path/”上, 尝试按“TAB”以折叠目录.
+# (但是首先, 你得安装‘gitignore-mode’.)
+
+#outline: ./
+/*
+!/.dir-locals.el
+!/.github/
+!/.gitignore
+!/GNUmakefile
+!/INSTALL.rst
+!/LICENSE.txt
+!/MANIFEST.md
+!/README.org
+!/docs/
+!/early-init.el
+!/etc/
+!/init.el
+!/lisp/
+!/modules/
+!/scripts/
+!/site-lisp/
+
+##outline:  ./.github/
+/.github/*
+!/.github/?*.yaml
+!/.github/CONTRIBUTING.textile
+
+##outline:  ./docs/
+/docs/*
+!/docs/Emacs-FAQ.txt
+!/docs/Emacs-regexp.org
+!/docs/Emacs-use_daemon.md
+!/docs/MS_Windows-keyboard_remap.txt
+!/docs/index.html
+
+##outline:  ./etc/
+/etc/*
+!/etc/abbrev_defs.el
+!/etc/clang-format.yaml
+!/etc/shynur-custom.el
+!/etc/yas-snippets/
+
+###outline:   ./etc/yas-snippets/
+/etc/yas-snippets/*
+!/etc/yas-snippets/?*-mode/
+
+####outline:    ./etc/yas-snippets/?*-mode/
+/etc/yas-snippets/?*-mode/*
+!/etc/yas-snippets/?*-mode/.yas-skip
+!/etc/yas-snippets/?*-mode/.yas-parents
+!/etc/yas-snippets/?*-mode/.yas-setup.el
+!/etc/yas-snippets/?*-mode/?*.yasnippet
+
+##outline:  ./lisp/
+/lisp/*
+!/lisp/shynur-?*.el
+!/lisp/themes/
+
+###outline:   ./lisp/themes/
+/lisp/themes/*
+!/lisp/themes/shynur-themes.el
+!/lisp/themes/shynur-?*-theme.el
+
+##outline:  ./modules/
+/modules/*
+!/modules/src/
+
+###outline:   ./modules/src/
+/modules/src/*
+!/modules/src/shynur-?*.c
+!/modules/src/?*.h
+# 文件‘emacs-module.h’基于 GPL, 一定要排除它, 切割!
+/modules/src/*emacs-module*
+
+##outline:  ./scripts/
+/scripts/*
+!/scripts/el.el
+
+##outline:  ./site-lisp/
+/site-lisp/*
+!/site-lisp/default.el
+!/site-lisp/leim-list.el
+!/site-lisp/site-start.el
+!/site-lisp/subdirs.el
+
+#outline:
+
+# Local Variables:
+# coding: utf-8-unix
+# End:
