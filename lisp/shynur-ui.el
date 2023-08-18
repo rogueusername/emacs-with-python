@@ -3,66 +3,82 @@
 ;;; Theme:
 
 (require 'shynur-themes)   ; (find-file-other-window "./themes/shynur-themes.el")
-
 (enable-theme 'modus-vivendi)
 
 ;;; Face (其实应该放到 theme 中去):
 
-;; (为什么要用‘letrec’ -- 见 <https://emacs.stackexchange.com/a/77767/39388>.)
-(letrec ((shynur--custom-set-faces
-          (lambda ()
-            ;; 摘编自 Centaur Emacs, 用于解决 字体 问题.
-            (let* ((font       "Maple Mono SC NF-12:slant:weight=medium:width=normal:spacing")
-                   (attributes (font-face-attributes font)                                   )
-                   (family     (plist-get attributes :family)                                ))
-              ;; Default font.
-              (apply #'set-face-attribute
-                     'default nil
-                     attributes)
-              ;; For all Unicode characters.
-              (set-fontset-font t 'symbol
-                                (font-spec :family "Segoe UI Symbol")
-                                nil 'prepend)
-              ;; Emoji 🥰.
-              (set-fontset-font t 'emoji
-                                (font-spec :family "Segoe UI Emoji")
-                                nil 'prepend)
-              ;; For Chinese characters.
-              (set-fontset-font t '(#x4e00 . #x9fff)
-                                (font-spec :family family)))
-            (custom-set-faces
-             '(cursor
-               ((t . (:background "chartreuse")))
-               nil
-               "该face仅有‘:background’字段有效")
-             '(tooltip
-               ((t . ( :height     100
-                       :background "dark slate gray"))))
-             '(line-number
-               ((t . ( :slant  italic
-                       :weight light))))
-             `(line-number-major-tick
-               ((t . ( :foreground ,(face-attribute 'line-number :foreground)
-                       :background ,(face-attribute 'line-number :background)
-                       :slant      italic
-                       :underline  t
-                       :weight     light)))
-               nil
-               "指定倍数的行号;除此以外,还有‘line-number-minor-tick’实现相同的功能,但其优先级更低")
-             '(line-number-current-line
-               ((t . ( :slant  normal
-                       :weight black))))
-             '(window-divider
-               ((t . (:foreground "SlateBlue4"))))
-             '(indent-guide-face
-               ((t . (:foreground "dark sea green"))))
-             '(fill-column-indicator
-               ((t . ( :background "black"
-                       :foreground "yellow")))))
-            (remove-hook 'server-after-make-frame-hook
-                         shynur--custom-set-faces))))
-  (add-hook 'server-after-make-frame-hook
-            shynur--custom-set-faces))
+(let ((shynur--custom-set-faces (lambda ()
+                                  ;; 摘编自 Centaur Emacs, 用于解决 字体 问题.
+                                  (let* ((font       "Maple Mono SC NF-12:slant:weight=medium:width=normal:spacing")
+                                         (attributes (font-face-attributes font)                                   )
+                                         (family     (plist-get attributes :family)                                ))
+                                    ;; Default font.
+                                    (apply #'set-face-attribute
+                                           'default nil
+                                           attributes)
+                                    ;; For all Unicode characters.
+                                    (set-fontset-font t 'symbol
+                                                      (font-spec :family "Segoe UI Symbol")
+                                                      nil 'prepend)
+                                    ;; Emoji 🥰.
+                                    (set-fontset-font t 'emoji
+                                                      (font-spec :family "Segoe UI Emoji")
+                                                      nil 'prepend)
+                                    ;; For Chinese characters.
+                                    (set-fontset-font t '(#x4e00 . #x9fff)
+                                                      (font-spec :family "SimSun")))
+                                  (custom-set-faces
+                                   '(cursor
+                                     ((t . (:background "#FFFFFF")))
+                                     nil
+                                     "该face仅有‘:background’字段有效")
+                                   '(tooltip
+                                     ((t . ( :height     100
+                                             :background "dark slate gray"))))
+                                   '(line-number
+                                     ((t . ( :family "SimSun"
+                                             :slant  italic
+                                             :weight light))))
+                                   ;; `(line-number-major-tick
+                                   ;;   ((t . ( :foreground ,(face-attribute 'line-number :foreground)
+                                   ;;           :background ,(face-attribute 'line-number :background)
+                                   ;;           :slant      italic
+                                   ;;           :underline  t
+                                   ;;           :weight     light)))
+                                   ;;   nil
+                                     ;; "指定倍数的行号;除此以外,还有‘line-number-minor-tick’实现相同的功能,但其优先级更低")
+                                   ;; '(line-number-current-line
+                                   ;;   ((t . ( :slant  normal
+                                   ;;           :weight black))))
+                                   '(window-divider
+                                     ((t . (:foreground "SlateBlue4"))))
+                                   '(indent-guide-face
+                                     ((t . (:foreground "dark sea green"))))
+                                   '(fill-column-indicator
+                                     ((t . ( :background "black"
+                                             :foreground "yellow"))))))))
+  (if (daemonp)
+      (add-hook 'server-after-make-frame-hook
+                ;; (为什么要用‘letrec’ -- 见 <https://emacs.stackexchange.com/a/77767/39388>.)
+                (letrec ((shynur--custom-set-faces--then-remove-itself (lambda ()
+                                                                        (funcall shynur--custom-set-faces)
+                                                                        (remove-hook 'server-after-make-frame-hook
+                                                                                     shynur--custom-set-faces--then-remove-itself))))
+                  shynur--custom-set-faces--then-remove-itself))
+    (funcall shynur--custom-set-faces)))
+
+(custom-set-faces
+ '(dashboard-recent-files-face
+   ((t . (:foreground "#8B8B8B"))))
+
+ '(dashboard-bookmarks-face
+   ((t . (:foreground "#8B8B8B"))))
+
+ '(dashboard-agenda-face
+   ((t . (:foreground "#8B8B8B")))))
+
+;; 其他自定义 face 设置...
+
 
 ;;; Frame:
 
@@ -75,6 +91,8 @@
 
 (with-eval-after-load 'frame
   (require 'transwin)
+  (when (not (daemonp))
+    (transwin-ask 80))
   (add-hook 'after-make-frame-functions
             (lambda (frame-to-be-made)
               (let ((inhibit-message t))
@@ -120,7 +138,7 @@
 (setq window-min-height 4
       window-min-width  1)
 
-;;; Mode Line:
+; Mode Line:
 
 ;;; [[package:melpa][doom-modeline]]: [[package][all-the-icons]]
 (setq doom-modeline-minor-modes t)
@@ -131,6 +149,7 @@
 ;; 尽可能地窄.
 (setq doom-modeline-height 1)
 (doom-modeline-mode)
+(display-time-mode nil) ; 关闭时间显示
 
 ;; Face ‘mode-line-inactive’ for non-selected window’s mode line.
 (setq mode-line-in-non-selected-windows t)
@@ -147,23 +166,23 @@
 
 ;;; Cursor:
 
-(blink-cursor-mode -1)
-;; 以下设置无效, 因为‘blink-cursor-mode’关掉了.
-(setq blink-cursor-delay  0  ; Cursor 静止一段时间之后开始闪烁.
-      blink-cursor-blinks 0  ; 闪烁次数
-      blink-cursor-interval 0.5
-      ;; 映射: ‘cursor-type’->光标黯淡时的造型.
-      blink-cursor-alist '((box  . nil)
-                           (bar  . box)
-                           (hbar . bar)))
+;; (blink-cursor-mode 1)
+;; ;; 以下设置无效, 因为‘blink-cursor-mode’关掉了.
+;; (setq blink-cursor-delay  0  ; Cursor 静止一段时间之后开始闪烁.
+;;       blink-cursor-blinks 0  ; 闪烁次数
+;;       blink-cursor-interval 0.5
+;;       ;; 映射: ‘cursor-type’->光标黯淡时的造型.
+;;       blink-cursor-alist '((box  . nil)
+;;                            (bar  . box)
+;;                            (hbar . bar)))
 
 ;; TUI下, 尽可能地 使 cursor 外形或特征 更加显著.
-(setq visible-cursor t)
+;; (setq visible-cursor t)
 
-(setq cursor-type 'box
-      ;; 在 non-selected window 中也 展示 cursor,
-      ;; 但是 是 镂空的.
-      cursor-in-non-selected-windows t)
+;; (setq cursor-type 'box
+;;       ;; 在 non-selected window 中也 展示 cursor,
+;;       ;; 但是 是 镂空的.
+;;       cursor-in-non-selected-windows t)
 
 ;;; Scroll:
 
@@ -184,6 +203,12 @@
 (setq scroll-conservatively most-positive-fixnum
       ;; Minibuffer 永远 一行一行地 automatically scroll.
       scroll-minibuffer-conservatively t)
+
+;; Scroll 时 通过 高亮 即将 滚走/来 的 篇幅 以 提示 滚动方向.
+(setq on-screen-inverse-flag t
+      on-screen-highlight-method 'shadow
+      on-screen-delay 0.4)
+(on-screen-global-mode)
 
 ;;; Tooltip:
 
@@ -198,7 +223,10 @@
 (tooltip-mode)
 
 (provide 'shynur-ui)
+(display-time-mode -1) ; 不显示modeline中的时间
+(scroll-bar-mode -1) ;; 禁用垂直滚动条
 
 ;; Local Variables:
 ;; coding: utf-8-unix
+;; no-byte-compile: nil
 ;; End:

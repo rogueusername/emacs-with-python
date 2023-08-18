@@ -48,7 +48,6 @@
                                   git-modes
                                   highlight
                                   on-screen
-                                  which-key
                                   yaml-mode
                                   yasnippet
                                   drag-stuff
@@ -59,7 +58,6 @@
                                   indent-guide
                                   rainbow-mode
                                   all-the-icons
-                                  doom-modeline
                                   markdown-mode
                                   org-superstar
                                   page-break-lines

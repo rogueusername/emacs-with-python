@@ -74,6 +74,7 @@
                                                          0 4 (face bold))
                                                        memory
                                                        mem-unit))))))))
+(display-time-mode -1) ; 不显示modeline中的时间
 
 ;; 顺序应当是不重要的.
 (require 'shynur-elisp)    ; (find-file-other-window "./shynur-elisp.el")

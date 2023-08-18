@@ -1,26 +1,5 @@
 ;;; -*- lexical-binding: t; -*-
 
-(setq initial-scratch-message #(";;     *
-;;      May the Code be with You!
-;;     .                                 .
-;;                               *
-;;          /\\/|_      __/\\\\
-;;         /    -\\    /-   ~\\  .              \\='
-;;         \\    = Y =T_ =   /
-;;          )==*(\\=`     \\=`) ~ \\
-;;         /     \\     /     \\
-;;         |     |     ) ~   (
-;;        /       \\   /     ~ \\
-;;        \\       /   \\~     ~/
-;; _/\\_/\\_/\\__  _/_/\\_/\\__~__/_/\\_/\\_/\\_/\\_/\\_
-;; |  |  |  | ) ) |  |  | ((  |  |  |  |  |  |
-;; |  |  |  |( (  |  |  |  \\\\ |  |  |  |  |  |
-;; |  |  |  | )_) |  |  |  |))|  |  |  |  |  |
-;; |  |  |  |  |  |  |  |  (/ |  |  |  |  |  |
-;; |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-\n"
-                                0 671 ( face           #1=(:foreground "VioletRed1")
-                                        font-lock-face #1#)))
 
 (setq inhibit-startup-screen t
       initial-buffer-choice  user-emacs-directory)
@@ -41,4 +20,5 @@
 
 ;; Local Variables:
 ;; coding: utf-8-unix
+;; no-byte-compile: nil
 ;; End:

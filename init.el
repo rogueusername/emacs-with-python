@@ -19,11 +19,9 @@
 
 (require 'shynur-init)  ; (find-file-other-window "./lisp/shynur-init.el")
 
-;; Local Variables:
-;; coding: utf-8-unix
-;; End:
 
-(setq frame-title-format "God's编辑器") ;;窗口名称
+(setq frame-title-format "emacs") ;;窗口名称
+
 
 
 ;; 4号模块.首页面板【dashboard】配置
@@ -92,6 +90,7 @@
   (setq lsp-pyright-typechecking-mode "off") ; 可选配置：设置类型检查的模式，"off"表示关闭类型检查
   )
 
+
 ;; 设置 Python 解释器路径
 (setq python-shell-interpreter "d:/Python/python.exe")
 
@@ -105,3 +104,51 @@
   :ensure t
   :config
   (global-company-mode 1))
+
+;; 复制当前行到下一行，并移动光标到新行
+(defun duplicate-line-and-move-down ()
+  "Duplicate the current line and move the cursor to the duplicated line."
+  (interactive)
+  (save-excursion
+    (beginning-of-line)
+    (kill-line)
+    (yank)
+    (newline)
+    (yank)))
+
+(global-set-key (kbd "C-S-d") 'duplicate-line-and-move-down)
+
+;; 在 Python Shell（*python* 缓冲区）中，使输出自动滚动到底部
+(add-hook 'inferior-python-mode-hook
+          (lambda () (setq-local comint-scroll-to-bottom-on-output t)))
+
+;; 关闭创建以~结尾的 Python 备份文件
+(setq make-backup-files nil)
+
+(require 'neotree)
+(global-set-key [f8] 'neotree-toggle)
+
+;; 设置 Neotree 打开文件的目录为当前文件所在目录
+(setq neo-smart-open t)
+
+(use-package beacon
+  :ensure t
+  :config
+  (beacon-mode 1)
+  ;; 可选：设置拖尾效果的背景颜色
+  (setq beacon-blink-when-point-moves-vertically 2))
+
+(setq repeat-delay 0.1)     ; 设置初始延迟时间（秒）
+(setq repeat-interval 0.05) ; 设置连续移动的时间间隔（秒）
+
+(display-time-mode -1) ; 不显示modeline中的时间
+
+
+(setq make-backup-files nil)
+(setq auto-save-default t)
+
+
+
+;; Local Variables:
+;; coding: utf-8-unix
+;; End:

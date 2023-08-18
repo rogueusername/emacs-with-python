@@ -20,8 +20,7 @@
 (add-hook 'shell-mode-hook
           (lambda ()
             "设置编解码."
-            (set-buffer-process-coding-system shynur/custom-shell-coding
-                                              shynur/custom-shell-coding)))
+            (set-buffer-process-coding-system "utf-8" "utf-8")))
 
 (add-hook 'shell-mode-hook
           (lambda ()

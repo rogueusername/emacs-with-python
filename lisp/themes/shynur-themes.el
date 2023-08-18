@@ -15,6 +15,7 @@
 ;;   enable the theme without loading its file by typing [M-x ‘enable-theme’].
 ;;   To disable a Custom theme, type [M-x ‘disable-theme’].
 
+(display-time-mode -1) ; 不显示modeline中的时间
 (setq custom-theme-directory (file-name-concat user-emacs-directory
                                                "lisp/themes/")
       ;; 难不成我还有空去看未知主题的源码, 分析它安全不安全??
@@ -23,7 +24,7 @@
 (require-theme 'modus-vivendi-theme)
 
 (provide 'shynur-themes)
-
+(display-time-mode -1) ; 不显示modeline中的时间
 ;; Local Variables:
 ;; coding: utf-8-unix
 ;; End:
